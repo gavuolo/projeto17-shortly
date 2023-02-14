@@ -10,13 +10,20 @@ export async function postSignIn(req, res){
             SELECT * FROM users WHERE email=$1
             `, [email]
         )
-    
         if(!bcrypt.compareSync(password, user.rows[0].password)){
             return res.status(401).send("Senha incorreta")
         }
-
-        res.send('ok')
+        const token = uuidV4()
+        console.log(token)
+        const userId = user.rows[0].id
+        await db.query(
+            `
+            INSERT INTO sessions (token, "userId")
+            VALUES ($1, $2)
+            `, [token, userId]
+        )
+        res.send({token}).status(201)
     }catch(error){
-        res.status(400).send(error.message)
+        res.send(error.message).status(400)
     }
 }
