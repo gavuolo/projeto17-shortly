@@ -1,5 +1,6 @@
 import { db } from "../database/database.js";
 import { nanoid } from "nanoid";
+
 export async function postUrl(req, res) {
   const authorization = req.headers.authorization;
   const token = authorization?.replace("Bearer ", "");
@@ -18,14 +19,14 @@ export async function postUrl(req, res) {
       `INSERT INTO urls ("userId", url, "shortUrl") VALUES ($1, $2, $3)`,
       [userID, url, shortUrl]
     );
-    const shortUrlId = await db.query(`SELECT * FROM urls WHERE url = $1`, [
-      url,
+    const shortUrlId = await db.query(`SELECT * FROM urls WHERE "shortUrl" = $1`, [
+        shortUrl,
     ]);
     const response = {
       id: shortUrlId.rows[0].id,
-      shortUrl: shortUrl,
+      shortUrl: shortUrl
     };
-    //seria legal não repetir url 
+    //seria legal não repetir url (se tiver tempo)
     res.send(response).status(201);
   } catch (err) {
     res.send(err);
