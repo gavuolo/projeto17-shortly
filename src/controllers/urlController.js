@@ -1,6 +1,33 @@
 import { db } from "../database/database.js";
-export async function postUrl(req, res){
-    //const authorization = req.headers.authorization;
-    //const token = authorization?.replace("Bearer ", "");
-    const {url} = res.locals.url
+import { nanoid } from "nanoid";
+export async function postUrl(req, res) {
+  const authorization = req.headers.authorization;
+  const token = authorization?.replace("Bearer ", "");
+  const { url } = res.locals.postUrl;
+  try {
+    if (!token) {
+      res.sendStatus(401);
+    }
+    const user = await db.query(
+      'SELECT "userId" FROM sessions WHERE token = $1',
+      [token]
+    );
+    const userID = user.rows[0].userId;
+    const shortUrl = nanoid(6);
+    await db.query(
+      `INSERT INTO urls ("userId", url, "shortUrl") VALUES ($1, $2, $3)`,
+      [userID, url, shortUrl]
+    );
+    const shortUrlId = await db.query(`SELECT * FROM urls WHERE url = $1`, [
+      url,
+    ]);
+    const response = {
+      id: shortUrlId.rows[0].id,
+      shortUrl: shortUrl,
+    };
+    //seria legal não repetir url 
+    res.send(response).status(201);
+  } catch (err) {
+    res.send(err);
+  }
 }
