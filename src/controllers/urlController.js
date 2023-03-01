@@ -35,4 +35,3 @@ export async function postUrl(req, res) {
     res.send(err);
   }
 }
-
