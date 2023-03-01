@@ -16,7 +16,7 @@ export async function postSignIn(req, res) {
     }
     const comparePassword = bcrypt.compareSync(password, user.rows[0].password);
     if (!comparePassword) {
-      return res.sendStatus(422);
+      return res.sendStatus(401);
     }
     const token = uuidV4();
     const userId = user.rows[0].id;
