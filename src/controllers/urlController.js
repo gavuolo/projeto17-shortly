@@ -56,7 +56,7 @@ export async function deleteUrl(req,res){
     `,[urlId])
     if(createUrlId.rowCount === 0){
       console.log(createUrlId.rowCount)
-      return res.sendStatus(401)
+      return res.sendStatus(404)
     }
     if(userSessionLogin.rows[0].userId !== createUrlId.rows[0].userId){
       return res.sendStatus(401)
