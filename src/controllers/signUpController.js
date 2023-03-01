@@ -5,12 +5,10 @@ export async function postSignUp(req, res) {
   const { name, email, password, confirmPassword } = res.locals.signUp;
 
   try {
-    //confirmação da senha
     if (confirmPassword != password) {
       return res.sendStatus(409);
     }
     const hashPassword = bcrypt.hashSync(password, 10);
-
     await db.query(
       `
     INSERT INTO users (name, email, password)
