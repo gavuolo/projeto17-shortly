@@ -4,7 +4,7 @@ import { postUrl } from "../controllers/urlController.js";
 import { postUrlValidation } from "../middlewares/urlMiddleware.js";
 const urlRouter = Router()
 
-urlRouter.post("/url/shorten",postUrlValidation, postUrl)
-urlRouter.get("/url/:id", getUrlId)
+urlRouter.post("/urls/shorten",postUrlValidation, postUrl)
+urlRouter.get("/urls/:id", getUrlId)
 
 export default urlRouter
