@@ -13,6 +13,6 @@ export async function getUrlId(req, res){
         const response = urlId.rows[0]
         res.send(response).status(200)
     } catch(err){
-        res.send(err)
+        res.status(500).send(err.message);
     }
 }

@@ -51,6 +51,6 @@ export async function getUsersMe(req, res) {
     };
     res.status(200).send(response);
   } catch (err) {
-    res.send(err);
+    res.status(500).send(err.message);
   }
 }

@@ -25,6 +25,6 @@ export async function getOpenShortUrl(req, res) {
     const redirectUrl = shortUrl.rows[0].url
     res.redirect(redirectUrl)
   } catch (err) {
-    res.send(err);
+    res.status(500).send(err.message);
   }
 }

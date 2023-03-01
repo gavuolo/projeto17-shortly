@@ -32,6 +32,42 @@ export async function postUrl(req, res) {
     //seria legal não repetir url (se tiver tempo)
     res.status(201).send(response);
   } catch (err) {
-    res.send(err);
+    res.status(500).send(error.message);
+  }
+}
+
+export async function deleteUrl(req,res){
+  const authorization = req.headers.authorization;
+  const token = authorization?.replace("Bearer ", "");
+  const urlId = req.params.id
+  try{
+    if (!token) {
+      res.sendStatus(401);
+    }
+    const userSessionLogin = await db.query(`
+    SELECT sessions."userId" FROM sessions 
+    WHERE token = $1
+    `, [token])
+    //userSessionLogin é o id do usuario logado
+    //userId é o id do usuário que criou o shortUrl
+    const createUrlId = await db.query(`
+    SELECT urls."userId" FROM urls
+    WHERE id = $1
+    `,[urlId])
+    if(createUrlId.rowCount === 0){
+      console.log(createUrlId.rowCount)
+      return res.sendStatus(401)
+    }
+    if(userSessionLogin.rows[0].userId !== createUrlId.rows[0].userId){
+      return res.sendStatus(401)
+    }
+    const idDelete = userSessionLogin.rows[0].userId
+    await db.query(`
+    DELETE FROM urls 
+    WHERE "userId" = $1
+    `, [idDelete])
+    res.sendStatus(204)
+  }catch(err){
+    res.status(500).send(err.message);
   }
 }
