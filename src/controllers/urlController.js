@@ -22,12 +22,12 @@ export async function postUrl(req, res) {
     const shortUrlId = await db.query(`SELECT * FROM urls WHERE "shortUrl" = $1`, [
         shortUrl,
     ]);
-    const response = {
-      id: shortUrlId.rows[0].id,
-      shortUrl: shortUrl
-    };
+     const response = {
+       id: shortUrlId.rows[0].id,
+       shortUrl: shortUrl
+     };
     //seria legal não repetir url (se tiver tempo)
-    res.send(response).status(201);
+    res.status(201).send(response);
   } catch (err) {
     res.send(err);
   }
