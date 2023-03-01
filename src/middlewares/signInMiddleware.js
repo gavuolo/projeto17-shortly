@@ -9,7 +9,6 @@ export async function signInValidation(req, res, next) {
     const errors = error.details.map((detail) => detail.message);
     return res.status(422).send({ errors });
   }
-
   res.locals.signIn = user
   next()
 }

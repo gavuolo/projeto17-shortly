@@ -6,7 +6,7 @@ export async function postSignUp(req, res) {
 
   try {
     if (confirmPassword != password) {
-      return res.sendStatus(409);
+      return res.sendStatus(422);
     }
     const hashPassword = bcrypt.hashSync(password, 10);
     await db.query(
