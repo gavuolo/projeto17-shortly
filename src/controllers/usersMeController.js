@@ -46,7 +46,7 @@ export async function getUsersMe(req, res) {
     const response = {
       id: userId,
       name: user.rows[0].name,
-      visitCount: sumVisitCount.rows[0],
+      visitCount: sumVisitCount.rows[0].sum,
       shortenedUrls: shortUrlUser.rows,
     };
     res.status(200).send(response);
