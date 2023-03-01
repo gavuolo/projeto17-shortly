@@ -10,11 +10,12 @@ export async function postSignUpValidation(req, res, next) {
     return res.status(422).send({ errors });
   }
   //email existente
-  const emailExist = await db.query("SELECT * FROM users WHERE email=$1",
-  [user.email]);
-  if(emailExist){
-    return res.status(409).send("Este e-mail já foi cadastrado")
+  const emailExist = await db.query("SELECT * FROM users WHERE email=$1", [
+    user.email,
+  ]);
+  if (emailExist.rowCount > 0) {
+    return res.status(409).send("Este e-mail já foi cadastrado");
   }
-  res.locals.signUp = user
-  next()
+  res.locals.signUp = user;
+  next();
 }
