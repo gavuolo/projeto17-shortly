@@ -13,6 +13,9 @@ export async function postUrl(req, res) {
       'SELECT "userId" FROM sessions WHERE token = $1',
       [token]
     );
+    if(user.rows[0] === undefined){
+      return res.status(401).send("Login necessário!")
+    }
     const userID = user.rows[0].userId;
     const shortUrl = nanoid(6);
     await db.query(
