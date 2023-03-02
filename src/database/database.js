@@ -5,12 +5,9 @@ dotenv.config();
 
 const { Pool } = pkg;
 
-
 if(process.env.MODE === 'prod'){
   configDatabase.ssl = true;
 }
-
-
 
 const configDatabase = {
   connectionString: process.env.DATABASE_URL,
